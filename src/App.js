@@ -1,62 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import TotalListeningTime from "./components/TotalListeningTime";
-import SongList from "./components/SongList";
 
-function App() {
-  const [songsByYear, setSongsByYear] = React.useState({});
-  const [totalTime, setTotalTime] = React.useState({});
+const App = () => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  useEffect(() => {
-    // Fetch data from Spotify API
-    const fetchDatat = async () => {
-      // Replace with actual API calls using access token
-      const mockData = {
-        2020: [
-          {
-            name: "Song 1",
-            artist: "Artist 1",
-            duration: 180,
-          },
-          {
-            name: "Song 2",
-            artist: "Artist 2",
-            duration: 240,
-          },
-        ],
-        2019: [
-          {
-            name: "Song 3",
-            artist: "Artist 3",
-            duration: 120,
-          },
-          {
-            name: "Song 4",
-            artist: "Artist 4",
-            duration: 300,
-          },
-        ],
-      };
-      const mockTotalTime = 12000; // in seconds
-      setSongsByYear(mockData);
-      setTotalTime(mockTotalTime);
-    };
+  const playlists = {
+    // Test playlist
+    2025: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2024: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2023: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2022: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2021: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2020: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", // Test playlist
+  };
 
-    fetchDatat();
-  }, []);
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
 
   return (
-    <div className="App">
-      <h1>My Spotify Stats</h1>
-      <TotalListeningTime totalTime={totalTime} />
-      {Object.keys(songsByYear).map((year) => (
-        <div key={year} className="year-section">
-          <h2>{year}</h2>
-          <SongList songs={songsByYear[year]} />
-        </div>
-      ))}
+    <div className="app-container">
+      <div className="left-column">
+        <h2>Select Year</h2>
+        <select value={selectedYear} onChange={handleYearChange}>
+          {Object.keys(playlists).map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="right-column">
+        <h2>Playlist for {selectedYear}</h2>
+        <iframe
+          src={playlists[selectedYear]}
+          width="100%"
+          height="380"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          title={`Spotify Playlist ${selectedYear}`}
+        ></iframe>
+      </div>
     </div>
   );
-}
+};
 
 export default App;

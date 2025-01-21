@@ -6,25 +6,62 @@ body {
   padding: 0;
 }
 
-.App {
-  text-align: center;
+.app-container {
+  display: flex;
+  flex-direction: row; /* Changed to row for side-by-side columns */
+  height: 100vh;
+}
+
+.left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e1e1e;
   padding: 20px;
 }
 
-.year-section {
-  margin: 20px 0;
+.right-column {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #282828;
+  padding: 20px;
 }
 
-a {
-  color: #1db954;
-  text-decoration: none;
+button {
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px 0;
+  border-radius: 5px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+button:hover {
+  background-color: #14833b;
 }
 
-li {
-  margin: 5px 0;
+.year-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  height: 200px;
+  width: 100px;
+}
+
+.year {
+  transition: font-size 0.3s, opacity 0.3s;
+  text-align: center;
+  line-height: 2rem;
+}
+
+.year.current-year {
+  font-weight: bold;
+  opacity: 1;
 }
