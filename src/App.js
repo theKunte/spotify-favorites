@@ -5,7 +5,7 @@ const App = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const yearPickerRef = useRef(null);
   const playlists = {
-    2025: "https://open.spotify.com/embed/",
+    2025: "",
     2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
     2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f ",
     2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas ",
@@ -40,7 +40,6 @@ const App = () => {
 
   return (
     <div className="app-container">
-      {/* Left Column: Year Picker */}
       <div className="left-column">
         <div className="year-picker-wrapper">
           <button onClick={() => scrollYears(-1)}>▲</button>
@@ -61,7 +60,6 @@ const App = () => {
         </div>
       </div>
 
-      {/* Right Column: Spotify Playlist */}
       <div className="right-column">
         <h2>Playlist for {selectedYear}</h2>
         {playlists[selectedYear] ? (
@@ -72,6 +70,9 @@ const App = () => {
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             title={`Spotify Playlist ${selectedYear}`}
+            onError={() =>
+              alert("Embedding not allowed. Redirecting to Spotify.")
+            }
           ></iframe>
         ) : (
           <p>No playlist available for this year.</p>
