@@ -19,7 +19,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #1e1e1e;
-  padding: 20px;
+  padding: 10px;
 }
 
 .right-column {
@@ -29,19 +29,19 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #282828;
-  padding: 50px;
+  padding: 10px;
 }
 
 button {
   background-color: #a400c5;
   color: #fff;
   border: none;
-  padding: 35px;
+  padding: 25px;
   cursor: pointer;
-  margin: 15px 0;
+  margin: 1px 0;
   border-radius: 5px;
   display: block;
-  width: 100px;
+  width: auto;
   text-align: center;
 }
 
@@ -61,18 +61,19 @@ button:hover {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  height: 300px;
-  width: 300px;
+  /* overflow-y: auto; */
+  height: 200px;
+  width: 200px;
 }
 
 .year {
   transition: font-size 0.3s, opacity 0.3s;
   text-align: center;
-  line-height: 5rem;
+  line-height: 4rem;
 }
 
 .year.current-year {
   font-weight: bold;
   opacity: 1;
-  font-size: 6rem;
+  font-size: 4rem;
 }
