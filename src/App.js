@@ -5,11 +5,14 @@ const App = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const yearPickerRef = useRef(null);
   const playlists = {
-    2023: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
-    2022: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+    2025: "https://open.spotify.com/embed/",
+    2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
+    2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f ",
+    2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas ",
+    2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8 ",
   };
 
-  const range = 5; // Number of years to show above and below the current year
+  const range = 3;
 
   const generateYears = (centerYear) => {
     const years = [];
