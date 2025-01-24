@@ -1,7 +1,7 @@
 {
   "name": "spotify-favorites",
   "version": "0.1.0",
-  "homepage": "https://gitname.github.io/react-gh-pages",
+  "homepage": "https://theKunte.github.io/spotify-favorites/",
   "private": true,
   "dependencies": {
     "cra-template": "1.2.0",
