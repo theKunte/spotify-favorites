@@ -8,7 +8,7 @@ body {
 
 .app-container {
   display: flex;
-  flex-direction: row; /* Changed to row for side-by-side columns */
+  flex-direction: row;
   height: 100vh;
 }
 
@@ -19,7 +19,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #1e1e1e;
-  padding: 10px;
+  padding: 5px;
 }
 
 .right-column {
@@ -29,7 +29,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #282828;
-  padding: 10px;
+  padding: 20px;
 }
 
 button {
@@ -61,7 +61,6 @@ button:hover {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  /* overflow-y: auto; */
   height: 200px;
   width: 200px;
 }

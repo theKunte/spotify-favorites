@@ -7,25 +7,23 @@ const App = () => {
   const playlists = {
     2025: "",
     2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
-    2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f ",
-    2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas ",
-    2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8 ",
+    2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f",
+    2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas",
+    2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8",
   };
 
-  const range = 3;
-
-  const generateYears = (centerYear) => {
-    const years = [];
-    for (let i = -range; i <= range; i++) {
-      years.push(centerYear + i);
-    }
-    return years;
-  };
-
-  const years = generateYears(selectedYear);
+  const yearsWithPlaylists = Object.keys(playlists)
+    .filter((year) => playlists[year]) // Only include years with non-empty playlist links
+    .map(Number); // Convert to numbers for easier comparison
 
   const scrollYears = (direction) => {
-    setSelectedYear((prev) => prev + direction);
+    const currentIndex = yearsWithPlaylists.indexOf(selectedYear);
+    if (currentIndex !== -1) {
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < yearsWithPlaylists.length) {
+        setSelectedYear(yearsWithPlaylists[newIndex]);
+      }
+    }
   };
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const App = () => {
         <div className="year-picker-wrapper">
           <button onClick={() => scrollYears(-1)}>▲</button>
           <div className="year-picker" ref={yearPickerRef}>
-            {years.map((year) => (
+            {yearsWithPlaylists.map((year) => (
               <div
                 key={year}
                 className={`year ${
