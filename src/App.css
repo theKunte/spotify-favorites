@@ -18,8 +18,10 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #1e1e1e;
-  padding: 5px;
+  background: linear-gradient(135deg, #1db954 0%, #a400c5 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
 }
 
 .right-column {
@@ -28,8 +30,61 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #282828;
+  background: linear-gradient(120deg, #282828 60%, #1db954 100%);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Animated music bars background */
+.music-bars-bg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+.music-bar {
+  width: 16px;
+  height: 80px;
+  background: #1db954;
+  border-radius: 8px;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.music-bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.music-bar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.music-bar:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.music-bar:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    height: 40px;
+  }
+  50% {
+    height: 120px;
+  }
+}
+
+/* Ensure content is above the animation */
+.right-column > *:not(.music-bars-bg) {
+  position: relative;
+  z-index: 2;
 }
 
 button {
@@ -49,7 +104,25 @@ button:hover {
   background-color: #d87fa1;
 }
 
+.year-picker-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.12;
+  z-index: 1;
+  pointer-events: none;
+  font-size: 16vw;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 4px 32px #000, 0 1px 0 #1db954;
+  user-select: none;
+  white-space: nowrap;
+}
+
 .year-picker-wrapper {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,6 +136,11 @@ button:hover {
   overflow: hidden;
   height: 200px;
   width: 200px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 1rem 0;
+  margin: 1rem 0;
 }
 
 .year {
@@ -75,4 +153,48 @@ button:hover {
   font-weight: bold;
   opacity: 1;
   font-size: 4rem;
+}
+
+@media (max-width: 700px) {
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .left-column {
+    min-height: unset;
+    width: 100%;
+    padding: 32px 0 24px 0;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    gap: 24px;
+    display: flex;
+  }
+  .year-picker-wrapper {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    width: 100%;
+  }
+  .year-picker {
+    width: 90vw;
+    max-width: 320px;
+    height: 120px;
+    padding: 0.5rem 0;
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+  }
+  .year.current-year {
+    font-size: 2.2rem;
+  }
+  button {
+    padding: 16px;
+    font-size: 1.1rem;
+  }
 }

@@ -3,6 +3,7 @@ import "./App.css";
 
 const App = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [isPlaying, setIsPlaying] = useState(false);
   const yearPickerRef = useRef(null);
   const playlists = {
     2025: "",
@@ -13,8 +14,8 @@ const App = () => {
   };
 
   const yearsWithPlaylists = Object.keys(playlists)
-    .filter((year) => playlists[year]) // Only include years with non-empty playlist links
-    .map(Number); // Convert to numbers for easier comparison
+    .filter((year) => playlists[year])
+    .map(Number);
 
   const scrollYears = (direction) => {
     const currentIndex = yearsWithPlaylists.indexOf(selectedYear);
@@ -35,6 +36,9 @@ const App = () => {
       }
     }
   }, [selectedYear]);
+
+  // Handler to set isPlaying when the iframe is interacted with
+  const handlePlayerInteraction = () => setIsPlaying(true);
 
   return (
     <div className="app-container">
@@ -59,6 +63,16 @@ const App = () => {
       </div>
 
       <div className="right-column">
+        {/* Only show animation if a song is playing */}
+        {isPlaying && (
+          <div className="music-bars-bg">
+            <div className="music-bar"></div>
+            <div className="music-bar"></div>
+            <div className="music-bar"></div>
+            <div className="music-bar"></div>
+            <div className="music-bar"></div>
+          </div>
+        )}
         <h2>Playlist for {selectedYear}</h2>
         {playlists[selectedYear] ? (
           <iframe
@@ -68,9 +82,9 @@ const App = () => {
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             title={`Spotify Playlist ${selectedYear}`}
-            onError={() =>
-              alert("Embedding not allowed. Redirecting to Spotify.")
-            }
+            onPlay={handlePlayerInteraction}
+            onFocus={handlePlayerInteraction}
+            onClick={handlePlayerInteraction}
           ></iframe>
         ) : (
           <p>No playlist available for this year.</p>
