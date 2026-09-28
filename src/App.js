@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
+const playlists = {
+  2025: "",
+  2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
+  2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f",
+  2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas",
+  2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8",
+};
+
+// Newest year first, skipping years that don't have a playlist yet
+const yearsWithPlaylists = Object.keys(playlists)
+  .filter((year) => playlists[year])
+  .map(Number)
+  .sort((a, b) => b - a);
+
 const App = () => {
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState(yearsWithPlaylists[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const yearPickerRef = useRef(null);
-  const playlists = {
-    2025: "",
-    2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
-    2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f",
-    2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas",
-    2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8",
-  };
-
-  const yearsWithPlaylists = Object.keys(playlists)
-    .filter((year) => playlists[year])
-    .map(Number);
 
   const scrollYears = (direction) => {
     const currentIndex = yearsWithPlaylists.indexOf(selectedYear);

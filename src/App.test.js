@@ -1,8 +1,16 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen, fireEvent } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("opens on the newest year that has a playlist", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Playlist for 2024" })).toBeInTheDocument();
+  expect(screen.getByTitle("Spotify Playlist 2024")).toBeInTheDocument();
+});
+
+test("arrow buttons move between years", () => {
+  render(<App />);
+  fireEvent.click(screen.getByText("▼"));
+  expect(screen.getByRole("heading", { name: "Playlist for 2023" })).toBeInTheDocument();
+  fireEvent.click(screen.getByText("▲"));
+  expect(screen.getByRole("heading", { name: "Playlist for 2024" })).toBeInTheDocument();
 });
