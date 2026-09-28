@@ -4,7 +4,7 @@ import App from "./App";
 test("opens on the newest year that has a playlist", () => {
   render(<App />);
   expect(screen.getByRole("heading", { name: "Playlist for 2024" })).toBeInTheDocument();
-  expect(screen.getByTitle("Spotify Playlist 2024")).toBeInTheDocument();
+  expect(screen.getByTitle("Spotify playlist for 2024")).toBeInTheDocument();
 });
 
 test("arrow buttons move between years", () => {

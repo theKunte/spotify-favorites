@@ -1,24 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
-
-const playlists = {
-  2025: "",
-  2024: "https://open.spotify.com/embed/playlist/2PqZ6i0tCTtyCcX8JHpAds?si=CvqF1HlRR-qzYC60Hr7yCg&pi=moggBQWiSYWfs",
-  2023: "https://open.spotify.com/embed/playlist/1TZVeN4UXjp3YzeP2dv7Qg?si=5zD1LIIaQgOhxYr0zSYMJw&pi=QeeD67v1QSa6f",
-  2022: "https://open.spotify.com/embed/playlist/4fawHenj9g4R7DKXTICKXZ?si=Vfm5hJuTSIiyNO8chu8bYA&pi=117Yf7AOR_eas",
-  2021: "https://open.spotify.com/embed/playlist/7kMFVHHgWx4LdntQtdgPtw?si=fsG2vwBVSYOZS1tz_VmmgQ&pi=QC_-FTY3RACC8",
-};
+import years from "./data/years";
+import PlayerEmbed from "./components/PlayerEmbed";
 
 // Newest year first, skipping years that don't have a playlist yet
-const yearsWithPlaylists = Object.keys(playlists)
-  .filter((year) => playlists[year])
-  .map(Number)
-  .sort((a, b) => b - a);
+const playableYears = years
+  .filter((entry) => entry.id)
+  .sort((a, b) => b.year - a.year);
+const yearsWithPlaylists = playableYears.map((entry) => entry.year);
 
 const App = () => {
   const [selectedYear, setSelectedYear] = useState(yearsWithPlaylists[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
   const yearPickerRef = useRef(null);
+  const selectedEntry = playableYears.find((e) => e.year === selectedYear);
 
   const scrollYears = (direction) => {
     const currentIndex = yearsWithPlaylists.indexOf(selectedYear);
@@ -39,9 +33,6 @@ const App = () => {
       }
     }
   }, [selectedYear]);
-
-  // Handler to set isPlaying when the iframe is interacted with
-  const handlePlayerInteraction = () => setIsPlaying(true);
 
   return (
     <div className="app-container">
@@ -66,29 +57,9 @@ const App = () => {
       </div>
 
       <div className="right-column">
-        {/* Only show animation if a song is playing */}
-        {isPlaying && (
-          <div className="music-bars-bg">
-            <div className="music-bar"></div>
-            <div className="music-bar"></div>
-            <div className="music-bar"></div>
-            <div className="music-bar"></div>
-            <div className="music-bar"></div>
-          </div>
-        )}
         <h2>Playlist for {selectedYear}</h2>
-        {playlists[selectedYear] ? (
-          <iframe
-            src={playlists[selectedYear]}
-            width="100%"
-            height="380"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            title={`Spotify Playlist ${selectedYear}`}
-            onPlay={handlePlayerInteraction}
-            onFocus={handlePlayerInteraction}
-            onClick={handlePlayerInteraction}
-          ></iframe>
+        {selectedEntry ? (
+          <PlayerEmbed entry={selectedEntry} />
         ) : (
           <p>No playlist available for this year.</p>
         )}
