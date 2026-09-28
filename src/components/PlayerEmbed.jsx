@@ -1,18 +1,8 @@
 // Embedded Tidal or Spotify player for one year's playlist.
 import React from "react";
+import { embedUrl } from "../embedUrl";
 
 const SERVICE_NAMES = { tidal: "Tidal", spotify: "Spotify" };
-
-export const embedUrl = ({ service, type = "playlist", id }) => {
-  switch (service) {
-    case "tidal":
-      return `https://embed.tidal.com/${type}s/${id}`;
-    case "spotify":
-      return `https://open.spotify.com/embed/${type}/${id}`;
-    default:
-      throw new Error(`Unknown music service: ${service}`);
-  }
-};
 
 const PlayerEmbed = ({ entry }) => (
   <iframe

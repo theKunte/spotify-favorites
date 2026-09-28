@@ -1,4 +1,4 @@
-import { embedUrl } from "./PlayerEmbed";
+import { embedUrl } from "./embedUrl";
 
 test("builds Tidal embed URLs", () => {
   expect(embedUrl({ service: "tidal", id: "abc-123" })).toBe(
