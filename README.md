@@ -1,6 +1,6 @@
-# Welcome to my simple favorite Spotify playlist
+# Soundprint
 
-This simple project displays the albums and songs that I liked  over the years. You can select the year and listen to the songs that I enjoyed during that time
+This simple project displays the albums and songs that I liked  over the years. You can select the year and listen to the songs that I enjoyed during that time, from Spotify and Tidal playlists.
 ## Adding a year
 
 Edit `src/data/years.js` and add an entry with the service (`tidal` or `spotify`) and the playlist ID from its share link.
