@@ -1,22 +1,36 @@
 # Soundprint
 
 This simple project displays the albums and songs that I liked  over the years. You can select the year and listen to the songs that I enjoyed during that time, from Spotify and Tidal playlists.
+## What's on the page
+
+For each year: the playlist and its player, a note, his favorite albums, and his **soundprint**, a fingerprint-like image drawn from the year's music:
+
+| Part of the print | Comes from |
+|---|---|
+| Rings | one per song on the playlist (thicker = earlier on it) |
+| Colors | the album covers |
+| Lobes | one per genre |
+| Smooth or jagged edges | the mood |
+| Dotted rings | songs by artists new to him that year |
+| Outer arcs | songs added each month |
+| Dots | moments pinned to songs |
+| Center button | his anthem, which plays when pressed; the print pulses at its tempo |
+
+Plus: "Songs we both love" highlighting, a download button for each year's print, every year side by side, a lifetime print with one band per year, and a 12×18 inch poster download.
+
+Anything not filled in yet is simply left out, so the site works with just a playlist link per year.
+
 ## Updating the content
 
-Everything the site shows comes from `src/data/years.js`. Each year needs only its service and playlist ID; everything else is optional and can be added over time.
+Everything the site shows comes from `src/data/years.js`. The comments at the top of that file list every field.
 
-**Add a new year**
-1. In Tidal, open the playlist, choose **Share → Copy link**, and copy the ID at the end of the link.
-2. Add a line to `src/data/years.js`: `{ year: 2025, service: "tidal", id: "the-id" },`
+1. On the site, choose **Add or edit details** at the bottom (or go to `…/#2024/edit`).
+2. Fill in the details. The page previews them as you type (only in your browser).
+3. Click **Copy code** and paste it over that year's entry in `src/data/years.js`.
+4. If you added album covers, use the **Save** buttons and upload the files to `public/covers/<year>/`.
+5. Run `npm run deploy`. The live site updates within a minute or two.
 
-**Add details to a year** (note, songs, mood, genres, favorite albums)
-1. Fill in the "Add details" editor in the Soundprint mockup and click **Copy code**.
-2. In `src/data/years.js`, replace that year's line with the copied code.
-3. Upload any album covers to `public/covers/<year>/` using the file names shown in the editor.
-
-**Publish**: run `npm run deploy`. The live site updates within a minute or two.
-
-You can make all of these edits on github.com with the pencil (edit) button, no computer setup needed.
+To add a new year, use **Add another year** in the editor with the playlist's share link. You can make these edits on github.com with the pencil (edit) button, no computer setup needed.
 
 ## Available Scripts
 

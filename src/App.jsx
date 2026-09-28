@@ -1,69 +1,118 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import "./App.css";
 import years from "./data/years";
-import PlayerEmbed from "./components/PlayerEmbed";
+import { mergeEntries, accentFor } from "./lib/entries";
+import { loadDrafts, saveDrafts } from "./lib/drafts";
+import { printModel } from "./lib/soundprint";
+import { useCoverPalettes, useRoute } from "./hooks";
+import YearTabs from "./components/YearTabs";
+import Hero from "./components/Hero";
+import SoundprintPanel from "./components/SoundprintPanel";
+import AlbumWall from "./components/AlbumWall";
+import Listen from "./components/Listen";
+import YearStrip from "./components/YearStrip";
+import Editor from "./components/Editor";
 
-// Newest year first, skipping years that don't have a playlist yet
-const playableYears = years
-  .filter((entry) => entry.id)
-  .sort((a, b) => b.year - a.year);
-const yearsWithPlaylists = playableYears.map((entry) => entry.year);
+const baseYears = new Set(years.filter((y) => y.id).map((y) => y.year));
 
 const App = () => {
-  const [selectedYear, setSelectedYear] = useState(yearsWithPlaylists[0]);
-  const yearPickerRef = useRef(null);
-  const selectedEntry = playableYears.find((e) => e.year === selectedYear);
+  const [drafts, setDrafts] = useState(loadDrafts);
+  const [storageOk, setStorageOk] = useState(true);
+  const [route, go] = useRoute();
+  const [anthemYear, setAnthemYear] = useState(null);
 
-  const scrollYears = (direction) => {
-    const currentIndex = yearsWithPlaylists.indexOf(selectedYear);
-    if (currentIndex !== -1) {
-      const newIndex = currentIndex + direction;
-      if (newIndex >= 0 && newIndex < yearsWithPlaylists.length) {
-        setSelectedYear(yearsWithPlaylists[newIndex]);
-      }
-    }
+  const entries = useMemo(() => mergeEntries(years, drafts), [drafts]);
+  const paletteFor = useCoverPalettes(entries);
+  const accents = useMemo(() => new Map(entries.map((e) => [e.year, accentFor(e)])), [entries]);
+  const models = useMemo(
+    () => new Map(entries.map((e) => [e.year, printModel(e, { palette: paletteFor(e), accent: accents.get(e.year) })])),
+    [entries, paletteFor, accents]
+  );
+
+  const entry = entries.find((e) => e.year === route.year) || entries[0];
+  const editing = route.edit;
+
+  const select = useCallback((year) => go(year, editing), [go, editing]);
+
+  const updateDrafts = (fn) => {
+    const next = fn(drafts);
+    setDrafts(next);
+    setStorageOk(saveDrafts(next));
   };
 
-  useEffect(() => {
-    if (yearPickerRef.current) {
-      const selectedItem =
-        yearPickerRef.current.querySelector(`.year.selected`);
-      if (selectedItem) {
-        selectedItem.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  }, [selectedYear]);
+  if (!entry) {
+    return (
+      <main className="wrap">
+        <h1 className="brand">
+          Sound<span>print</span>
+        </h1>
+        <p>No playlists yet. Add one to src/data/years.js.</p>
+      </main>
+    );
+  }
+
+  const accent = accents.get(entry.year);
+  const model = models.get(entry.year);
 
   return (
-    <div className="app-container">
-      <div className="left-column">
-        <div className="year-picker-wrapper">
-          <button onClick={() => scrollYears(-1)}>▲</button>
-          <div className="year-picker" ref={yearPickerRef}>
-            {yearsWithPlaylists.map((year) => (
-              <div
-                key={year}
-                className={`year ${
-                  year === selectedYear ? "current-year selected" : ""
-                }`}
-                onClick={() => setSelectedYear(year)}
-              >
-                {year}
-              </div>
-            ))}
-          </div>
-          <button onClick={() => scrollYears(1)}>▼</button>
-        </div>
-      </div>
+    <div className="wrap" style={{ "--accent": accent }}>
+      <header className="top">
+        <h1 className="brand">
+          Sound<span>print</span>
+        </h1>
+        <p>The albums and songs he played most, one year at a time.</p>
+      </header>
 
-      <div className="right-column">
-        <h2>Playlist for {selectedYear}</h2>
-        {selectedEntry ? (
-          <PlayerEmbed entry={selectedEntry} />
-        ) : (
-          <p>No playlist available for this year.</p>
+      <YearTabs entries={entries} models={models} selected={entry.year} onSelect={select} />
+
+      <main className="main">
+        <Hero entry={entry} editing={editing} />
+        <SoundprintPanel
+          key={entry.year}
+          entry={entry}
+          model={model}
+          accent={accent}
+          editing={editing}
+          onPlayAnthem={() => {
+            setAnthemYear(entry.year);
+            document.getElementById("listen-h")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        />
+        <AlbumWall entry={entry} editing={editing} />
+        <Listen entry={entry} playingAnthem={anthemYear === entry.year} onBack={() => setAnthemYear(null)} />
+        <YearStrip entries={entries} models={models} accents={accents} selected={entry.year} onSelect={select} />
+        {editing && (
+          <Editor
+            key={entry.year}
+            entry={entry}
+            draft={drafts[entry.year] || {}}
+            isNewYear={!baseYears.has(entry.year)}
+            storageOk={storageOk}
+            onChange={(patch) =>
+              updateDrafts((d) => ({ ...d, [entry.year]: { ...(d[entry.year] || {}), ...patch } }))
+            }
+            onClear={() =>
+              updateDrafts((d) => {
+                const next = { ...d };
+                delete next[entry.year];
+                return next;
+              })
+            }
+            onAddYear={(year, link) => {
+              updateDrafts((d) => ({ ...d, [year]: { ...(d[year] || {}), ...link } }));
+              go(year, true);
+            }}
+          />
         )}
-      </div>
+      </main>
+
+      <footer className="foot">
+        {editing ? (
+          <a href={`#${entry.year}`}>Close the editor</a>
+        ) : (
+          <a href={`#${entry.year}/edit`}>Add or edit details</a>
+        )}
+      </footer>
     </div>
   );
 };

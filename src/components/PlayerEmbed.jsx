@@ -1,19 +1,18 @@
-// Embedded Tidal or Spotify player for one year's playlist.
+// Embedded Tidal or Spotify player for a playlist, album or track.
 import React from "react";
-import { embedUrl } from "../embedUrl";
+import { embedUrl } from "../lib/embedUrl";
+import { SERVICE_NAMES } from "../lib/links";
 
-const SERVICE_NAMES = { tidal: "Tidal", spotify: "Spotify" };
-
-const PlayerEmbed = ({ entry }) => (
+const PlayerEmbed = ({ item, title }) => (
   <iframe
-    src={embedUrl(entry)}
+    src={embedUrl(item)}
     width="100%"
-    height="380"
-    style={{ border: 0 }}
+    height={item.type === "track" ? 160 : 380}
+    style={{ border: 0, borderRadius: 12, display: "block" }}
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
     allowFullScreen
     loading="lazy"
-    title={`${SERVICE_NAMES[entry.service]} playlist for ${entry.year}`}
+    title={title || `${SERVICE_NAMES[item.service]} ${item.type || "playlist"}`}
   ></iframe>
 );
 
