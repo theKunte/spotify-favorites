@@ -65,3 +65,15 @@ test("palette picks the most common vivid colors and skips greys", () => {
   const red = [220, 40, 40], blue = [40, 60, 200], grey = [128, 128, 128];
   expect(paletteFrom([red, red, red, blue, grey, grey, grey, grey])).toEqual([red, blue]);
 });
+
+test("the glow uses cover colors, topped up from the accent", async () => {
+  const { glowColors } = await import("./color");
+  expect(glowColors([], "#ffb454")).toHaveLength(3);
+  expect(glowColors([], "#ffb454")[0]).toMatch(/^hsl\(/);
+  expect(glowColors([[1, 2, 3], [4, 5, 6], [7, 8, 9], [9, 9, 9]], "#ffb454")).toEqual([
+    "rgb(1, 2, 3)", "rgb(4, 5, 6)", "rgb(7, 8, 9)",
+  ]);
+  const mixed = glowColors([[10, 20, 30]], "#ffb454");
+  expect(mixed).toHaveLength(3);
+  expect(mixed[0]).toBe("rgb(10, 20, 30)");
+});

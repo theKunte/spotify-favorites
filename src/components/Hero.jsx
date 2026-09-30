@@ -41,7 +41,8 @@ const Hero = ({ entry, editing }) => {
           Playlist on {SERVICE_NAMES[entry.service]}
         </span>
       </div>
-      <div className="deck" aria-hidden="true">
+      {/* keyed by year so the sleeve and record slide in again on each change */}
+      <div className="deck" aria-hidden="true" key={entry.year}>
         <div className="record" />
         <div className="sleeve">
           {lead ? (

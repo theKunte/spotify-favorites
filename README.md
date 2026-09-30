@@ -22,6 +22,7 @@ Each year gets its own page with the playlist ready to play, a few words about w
 - **Album wall** with his top albums and their covers.
 - **Every year side by side**, plus a **lifetime soundprint** with one band of rings per year.
 - **Downloads:** each year's print as an image, and a printable poster of all the years.
+- **Background:** a soft glow in the year's colors, the year's soundprint turning slowly as a faint watermark, and dust drifting through a beam of light. Switching years slides in a new record and sleeve, and hovering over the record pulls it partway out. Motion switches off for anyone whose device asks for reduced motion.
 
 ### How to read a soundprint
 

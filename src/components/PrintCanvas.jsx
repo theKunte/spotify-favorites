@@ -1,11 +1,12 @@
 // A square canvas that draws a soundprint, sharp on high-density screens.
 // When `animateKey` changes, the rings draw in from the center.
+// `maxSize` caps the pixel size, for very large, faint uses like the backdrop.
 import React, { useEffect, useRef } from "react";
 import { useReducedMotion } from "../hooks";
 
 const DURATION = 900;
 
-const PrintCanvas = ({ render, animateKey = null, className, label }) => {
+const PrintCanvas = ({ render, animateKey = null, className, label, maxSize = Infinity }) => {
   const ref = useRef(null);
   const lastKey = useRef(animateKey);
   const reduced = useReducedMotion();
@@ -15,7 +16,7 @@ const PrintCanvas = ({ render, animateKey = null, className, label }) => {
     const ctx = canvas?.getContext?.("2d");
     if (!ctx) return undefined;
     const fit = () => {
-      const s = Math.max(1, Math.round(canvas.clientWidth * (window.devicePixelRatio || 1)));
+      const s = Math.max(1, Math.round(Math.min(maxSize, canvas.clientWidth * (window.devicePixelRatio || 1))));
       if (canvas.width !== s) canvas.width = canvas.height = s;
       return s;
     };
@@ -47,7 +48,7 @@ const PrintCanvas = ({ render, animateKey = null, className, label }) => {
       cancelAnimationFrame(frame);
       observer?.disconnect();
     };
-  }, [render, animateKey, reduced]);
+  }, [render, animateKey, reduced, maxSize]);
 
   return (
     <canvas
