@@ -12,6 +12,7 @@ import AlbumWall from "./components/AlbumWall";
 import Listen from "./components/Listen";
 import YearStrip from "./components/YearStrip";
 import Editor from "./components/Editor";
+import Backdrop from "./components/Backdrop";
 
 const baseYears = new Set(years.filter((y) => y.id).map((y) => y.year));
 
@@ -55,65 +56,68 @@ const App = () => {
   const model = models.get(entry.year);
 
   return (
-    <div className="wrap" style={{ "--accent": accent }}>
-      <header className="top">
-        <h1 className="brand">
-          Sound<span>print</span>
-        </h1>
-        <p>The albums and songs he played most, one year at a time.</p>
-      </header>
+    <>
+      <Backdrop model={model} accent={accent} />
+      <div className="wrap" style={{ "--accent": accent }}>
+        <header className="top">
+          <h1 className="brand">
+            Sound<span>print</span>
+          </h1>
+          <p>The albums and songs he played most, one year at a time.</p>
+        </header>
 
-      <YearTabs entries={entries} models={models} selected={entry.year} onSelect={select} />
+        <YearTabs entries={entries} models={models} selected={entry.year} onSelect={select} />
 
-      <main className="main">
-        <Hero entry={entry} editing={editing} />
-        <SoundprintPanel
-          key={entry.year}
-          entry={entry}
-          model={model}
-          accent={accent}
-          editing={editing}
-          onPlayAnthem={() => {
-            setAnthemYear(entry.year);
-            document.getElementById("listen-h")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-        />
-        <AlbumWall entry={entry} editing={editing} />
-        <Listen entry={entry} playingAnthem={anthemYear === entry.year} onBack={() => setAnthemYear(null)} />
-        <YearStrip entries={entries} models={models} accents={accents} selected={entry.year} onSelect={select} />
-        {editing && (
-          <Editor
+        <main className="main">
+          <Hero entry={entry} editing={editing} />
+          <SoundprintPanel
             key={entry.year}
             entry={entry}
-            draft={drafts[entry.year] || {}}
-            isNewYear={!baseYears.has(entry.year)}
-            storageOk={storageOk}
-            onChange={(patch) =>
-              updateDrafts((d) => ({ ...d, [entry.year]: { ...(d[entry.year] || {}), ...patch } }))
-            }
-            onClear={() =>
-              updateDrafts((d) => {
-                const next = { ...d };
-                delete next[entry.year];
-                return next;
-              })
-            }
-            onAddYear={(year, link) => {
-              updateDrafts((d) => ({ ...d, [year]: { ...(d[year] || {}), ...link } }));
-              go(year, true);
+            model={model}
+            accent={accent}
+            editing={editing}
+            onPlayAnthem={() => {
+              setAnthemYear(entry.year);
+              document.getElementById("listen-h")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
           />
-        )}
-      </main>
+          <AlbumWall entry={entry} editing={editing} />
+          <Listen entry={entry} playingAnthem={anthemYear === entry.year} onBack={() => setAnthemYear(null)} />
+          <YearStrip entries={entries} models={models} accents={accents} selected={entry.year} onSelect={select} />
+          {editing && (
+            <Editor
+              key={entry.year}
+              entry={entry}
+              draft={drafts[entry.year] || {}}
+              isNewYear={!baseYears.has(entry.year)}
+              storageOk={storageOk}
+              onChange={(patch) =>
+                updateDrafts((d) => ({ ...d, [entry.year]: { ...(d[entry.year] || {}), ...patch } }))
+              }
+              onClear={() =>
+                updateDrafts((d) => {
+                  const next = { ...d };
+                  delete next[entry.year];
+                  return next;
+                })
+              }
+              onAddYear={(year, link) => {
+                updateDrafts((d) => ({ ...d, [year]: { ...(d[year] || {}), ...link } }));
+                go(year, true);
+              }}
+            />
+          )}
+        </main>
 
-      <footer className="foot">
-        {editing ? (
-          <a href={`#${entry.year}`}>Close the editor</a>
-        ) : (
-          <a href={`#${entry.year}/edit`}>Add or edit details</a>
-        )}
-      </footer>
-    </div>
+        <footer className="foot">
+          {editing ? (
+            <a href={`#${entry.year}`}>Close the editor</a>
+          ) : (
+            <a href={`#${entry.year}/edit`}>Add or edit details</a>
+          )}
+        </footer>
+      </div>
+    </>
   );
 };
 

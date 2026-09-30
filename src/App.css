@@ -14,6 +14,9 @@
   --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
   --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --glow-a: 0.34; /* background effects */
+  --wm-a: 0.09;
+  --beam: rgb(255 240 220 / 0.05);
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
@@ -23,9 +26,12 @@
     --line: #d6d2dd;
     --fg: #1a1720;
     --muted: #5f5969;
+    --glow-a: 0.26;
+    --wm-a: 0.12;
+    --beam: rgb(255 255 255 / 0.35);
     color-scheme: light;
   }
-  .wrap {
+  .wrap.wrap {
     --accent-ink: color-mix(in oklab, var(--accent) 55%, #1a1720);
   }
 }
@@ -50,6 +56,12 @@ img {
 }
 a {
   color: var(--accent-ink);
+}
+.wrap {
+  position: relative;
+  z-index: 1;
+  /* re-read here so text follows the year's accent, which is set on .wrap */
+  --accent-ink: var(--accent);
 }
 .wrap,
 .main {
@@ -305,6 +317,129 @@ a {
     radial-gradient(circle at center, var(--accent) 0 16%, #0c0b0e 16.5% 18%, transparent 18.5%),
     repeating-radial-gradient(circle at center, #121015 0 2px, #1b1820 2px 3px);
   box-shadow: 0 16px 40px -12px rgb(0 0 0 / 0.6);
+  transition: translate 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Crate flip: the sleeve and record slide in when the year changes */
+.deck .sleeve {
+  animation: sleeve-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.deck .record {
+  animation: record-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes sleeve-in {
+  0% {
+    transform: translate(-18%, -8%) rotate(-10deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes record-in {
+  0% {
+    transform: translateX(-30%) rotate(-200deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+/* Hovering pulls the record partway out of its sleeve: the sleeve slides
+   left and the record slides right, so both stay inside the page */
+.sleeve {
+  transition: translate 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (hover: hover) {
+  .deck:hover .sleeve {
+    translate: -12% 0;
+  }
+  .deck:hover .record {
+    translate: 8% 0;
+  }
+}
+
+/* Background: year-colored glow, soundprint watermark, dust in a light beam */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.backdrop > * {
+  position: absolute;
+}
+.glow {
+  inset: 0;
+}
+.glow i {
+  position: absolute;
+  width: 62vmax;
+  height: 62vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: var(--glow-a);
+  transition: background-color 1s;
+  animation: drift 38s ease-in-out infinite alternate;
+}
+.glow .b1 {
+  background: var(--c1);
+  top: -26vmax;
+  left: -14vmax;
+}
+.glow .b2 {
+  background: var(--c2);
+  top: 8vh;
+  right: -28vmax;
+  animation-delay: -12s;
+  animation-duration: 46s;
+}
+.glow .b3 {
+  background: var(--c3);
+  bottom: -34vmax;
+  left: 18vw;
+  animation-delay: -24s;
+  animation-duration: 52s;
+}
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6vmax, 4vmax) scale(1.08);
+  }
+  100% {
+    transform: translate(-4vmax, 7vmax) scale(0.96);
+  }
+}
+.wm-wrap {
+  width: 150vmin;
+  height: 150vmin;
+  top: -18vmin;
+  right: -52vmin;
+}
+.wm {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: var(--wm-a);
+  animation: turn 240s linear infinite;
+}
+@keyframes turn {
+  to {
+    rotate: 360deg;
+  }
+}
+.beam {
+  inset: -20% -10%;
+  background: linear-gradient(115deg, transparent 32%, var(--beam) 45%, transparent 58%);
+}
+.dust {
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Section heads */

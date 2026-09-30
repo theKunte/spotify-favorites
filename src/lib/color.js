@@ -71,3 +71,15 @@ export function sampleImage(img, size = 240) {
   }
   return samples;
 }
+
+// Three colors for the background glow: the year's cover colors when there
+// are enough, topped up with hues next to the year's accent color.
+export function glowColors(palette, accent) {
+  const fromCovers = palette.slice(0, 3).map(rgbCss);
+  if (fromCovers.length >= 3) return fromCovers;
+  const [h, s, l] = toHsl(hexToRgb(accent));
+  const shift = ([dh, dl]) =>
+    `hsl(${Math.round((h + dh + 360) % 360)} ${Math.round(s * 100)}% ${Math.round(Math.max(0, l * 100 + dl))}%)`;
+  const fromAccent = [[0, 0], [38, -4], [-55, -8]].map(shift);
+  return [...fromCovers, ...fromAccent.slice(fromCovers.length ? 1 : 0)].slice(0, 3);
+}
