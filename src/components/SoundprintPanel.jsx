@@ -34,7 +34,7 @@ const SoundprintPanel = ({ entry, model, accent, editing, onPlayAnthem }) => {
   const download = async () => {
     setSaving(true);
     try {
-      downloadCanvas(await renderAvatar(model, { accent }), `soundprint-${entry.year}.png`);
+      downloadCanvas(await renderAvatar(model, { accent }), `groove-${entry.year}.png`);
     } finally {
       setSaving(false);
     }
@@ -42,8 +42,8 @@ const SoundprintPanel = ({ entry, model, accent, editing, onPlayAnthem }) => {
 
   const peak = model.monthly ? model.monthly.indexOf(Math.max(...model.monthly)) : -1;
   const label = model.complete
-    ? `Soundprint for ${entry.year}: ${model.songs} rings, ${model.genres.length} lobes, ${model.mood} texture`
-    : `Soundprint for ${entry.year}, still a sketch until more details are added`;
+    ? `Groove for ${entry.year}: ${model.songs} rings, ${model.genres.length} lobes, ${model.mood} texture`
+    : `Groove for ${entry.year}, still a sketch until more details are added`;
 
   return (
     <section className="panel print-sec" aria-labelledby="print-h">
@@ -90,11 +90,11 @@ const SoundprintPanel = ({ entry, model, accent, editing, onPlayAnthem }) => {
       <div className="print-text">
         <p className="catno">His avatar for the year</p>
         <h2 id="print-h">
-          The {entry.year} <span>soundprint</span>
+          The {entry.year} <span>groove</span>
         </h2>
         <p>
-          Drawn from the playlist itself. Every year's music makes a different print, and the same music always
-          makes the same one.
+          Drawn from the playlist itself. Every year's music makes different grooves, and the same music always
+          makes the same ones.
         </p>
         {(model.mood || model.genres.length > 0) && (
           <ul className="chips">

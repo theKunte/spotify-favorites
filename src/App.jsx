@@ -45,7 +45,7 @@ const App = () => {
     return (
       <main className="wrap">
         <h1 className="brand">
-          Sound<span>print</span>
+          Years in <span>Grooves</span>
         </h1>
         <p>No playlists yet. Add one to src/data/years.js.</p>
       </main>
@@ -61,7 +61,7 @@ const App = () => {
       <div className="wrap" style={{ "--accent": accent }}>
         <header className="top">
           <h1 className="brand">
-            Sound<span>print</span>
+            Years in <span>Grooves</span>
           </h1>
           <p>The albums and songs he played most, one year at a time.</p>
         </header>
