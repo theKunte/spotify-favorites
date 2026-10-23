@@ -11,7 +11,7 @@ const Hero = ({ entry, editing }) => {
     <section className="hero" aria-live="polite">
       <div className="hero-text">
         <p className="catno">
-          Vol. {String(entry.year - 2020).padStart(2, "0")} · Cat. no. SP-{entry.year}
+          Vol. {String(entry.year - 2020).padStart(2, "0")} · Cat. no. YG-{entry.year}
         </p>
         <h2 className="big">{entry.year}</h2>
         {entry.title && <p className="playlist-title">{entry.title}</p>}
@@ -49,7 +49,7 @@ const Hero = ({ entry, editing }) => {
             <img src={coverSrc(lead.cover)} alt="" />
           ) : (
             <div className="sleeve-type">
-              <span>Soundprint</span>
+              <span>Years in Grooves</span>
               <b>{entry.year}</b>
             </div>
           )}

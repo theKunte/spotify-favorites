@@ -1,5 +1,5 @@
 // One entry per year. To add or update a year, change its entry below.
-// The "Add details" editor in the Soundprint mockup writes these for you.
+// The "Add details" editor in the Years in Grooves mockup writes these for you.
 //
 // Required
 //   year:    the year, e.g. 2025
@@ -14,9 +14,9 @@
 //   type:       "playlist" (default) or "album"
 //   title:      the playlist's name
 //   note:       a sentence or two about the year, in his words
-//   songs:      how many songs are on the playlist (one soundprint ring each)
-//   mood:       "calm", "mellow", "upbeat" or "loud" (the soundprint's texture)
-//   genres:     e.g. ["indie", "jazz"] (one soundprint lobe each)
+//   songs:      how many songs are on the playlist (one groove ring each)
+//   mood:       "calm", "mellow", "upbeat" or "loud" (the groove's texture)
+//   genres:     e.g. ["indie", "jazz"] (one groove lobe each)
 //   newArtists: % of songs by artists new to him that year (drawn dotted)
 //   monthly:    songs added each month, Jan to Dec, e.g. [8, 5, 9, 12, 7, 6, 10, 14, 9, 6, 8, 6]
 //   anthem:     his #1 song, played from the print's center, e.g.

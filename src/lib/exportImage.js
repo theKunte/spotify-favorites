@@ -49,7 +49,7 @@ export async function renderAvatar(model, { accent, size = 1600 }) {
   ctx.fillStyle = MUTED;
   ctx.font = `500 ${size * 0.02}px ${MONO}`;
   ctx.textAlign = "right";
-  ctx.fillText("SOUNDPRINT", size * 0.955, size * 0.95);
+  ctx.fillText("YEARS IN GROOVES", size * 0.955, size * 0.95);
   return canvas;
 }
 
@@ -66,8 +66,8 @@ export async function renderPoster(items) {
 
   const years = items.map((it) => it.model.year).sort();
   ctx.fillStyle = PAPER;
-  ctx.font = `900 380px ${DISPLAY}`;
-  ctx.fillText("SOUNDPRINT", margin, margin + 300);
+  ctx.font = `900 300px ${DISPLAY}`;
+  ctx.fillText("YEARS IN GROOVES", margin, margin + 280, W - margin * 2);
   ctx.fillStyle = MUTED;
   ctx.font = `500 64px ${MONO}`;
   ctx.fillText(`${years[0]}–${years[years.length - 1]} · ONE RING PER SONG`, margin + 8, margin + 420);

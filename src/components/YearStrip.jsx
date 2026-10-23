@@ -22,7 +22,7 @@ const YearStrip = ({ entries, models, accents, selected, onSelect }) => {
     setSaving(true);
     try {
       const items = entries.map((e) => ({ model: models.get(e.year), accent: accents.get(e.year) }));
-      downloadCanvas(await renderPoster(items), `soundprint-poster-${first}-${last}.png`);
+      downloadCanvas(await renderPoster(items), `years-in-grooves-poster-${first}-${last}.png`);
     } finally {
       setSaving(false);
     }
@@ -54,12 +54,12 @@ const YearStrip = ({ entries, models, accents, selected, onSelect }) => {
         <PrintCanvas
           className="life-canvas"
           render={renderLife}
-          label={`Lifetime soundprint, ${first} to ${last}, one band per year`}
+          label={`Lifetime groove, ${first} to ${last}, one band per year`}
         />
         <div className="print-text">
           <p className="catno">All years together</p>
           <h2>
-            The lifetime <span>soundprint</span>
+            The lifetime <span>groove</span>
           </h2>
           <p>
             Each year is one band of rings, {first} in the middle and {last} on the outside, drawn in that year's

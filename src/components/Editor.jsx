@@ -162,7 +162,7 @@ const Editor = ({ entry, draft, isNewYear, storageOk, onChange, onClear, onAddYe
           </fieldset>
 
           <fieldset>
-            <legend>Soundprint</legend>
+            <legend>The groove</legend>
             <div className="row2">
               <Field id="f-songs" label="Songs on the playlist">
                 <input type="number" id="f-songs" min="1" max="1000" value={entry.songs ?? ""} placeholder="e.g. 100" onChange={(e) => onChange({ songs: e.target.value })} />
@@ -271,7 +271,7 @@ const Editor = ({ entry, draft, isNewYear, storageOk, onChange, onClear, onAddYe
 
           <fieldset>
             <legend>Favorite albums</legend>
-            <p className="muted small">Up to 10, in order. Tap a square to add the cover; its colors feed the soundprint.</p>
+            <p className="muted small">Up to 10, in order. Tap a square to add the cover; its colors feed the groove.</p>
             <div className="rows">
               {albums.map((a, k) => (
                 <div className="album-row" key={k}>
